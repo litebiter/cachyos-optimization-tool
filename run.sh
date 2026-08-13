@@ -156,13 +156,15 @@ main_menu() {
         echo -e "${CYAN}  [4]${NC} ${WHITE}Run Daily Maintenance${NC}"
         echo -e "${CYAN}  [5]${NC} ${WHITE}Rollback Changes${NC}"
         echo -e "${CYAN}  [6]${NC} ${WHITE}Hardware Information${NC}"
-        echo -e "${CYAN}  [7]${NC} ${WHITE}Low Latency Gaming Mode${NC}"
-        echo -e "${CYAN}  [8]${NC} ${WHITE}About${NC}"
+        echo -e "${CYAN}  [7]${NC} ${WHITE}Set High Refresh Rate${NC}"
+        echo -e "${CYAN}  [8]${NC} ${WHITE}Low Latency Gaming Mode${NC}"
+        echo -e "${CYAN}  [9]${NC} ${WHITE}Advanced Kernel Tweaks${NC}"
+        echo -e "${CYAN}  [10]${NC} ${WHITE}About${NC}"
         echo -e "${CYAN}  [0]${NC} ${RED}Exit${NC}"
         echo ""
         echo -e "${GREEN}═══════════════════════════════════════════════════════════════${NC}"
         echo ""
-        echo -ne "${YELLOW}Enter your choice [0-8]: ${NC}"
+        echo -ne "${YELLOW}Enter your choice [0-10]: ${NC}"
         read choice
         
         case $choice in
@@ -185,9 +187,15 @@ main_menu() {
                 hardware_info
                 ;;
             7)
-                low_latency_mode
+                set_high_refresh_rate
                 ;;
             8)
+                low_latency_mode
+                ;;
+            9)
+                advanced_kernel_tweaks
+                ;;
+            10)
                 about
                 ;;
             0)
@@ -415,6 +423,105 @@ low_latency_mode() {
         fi
     else
         show_info "Low latency mode cancelled."
+    fi
+    
+    echo ""
+    echo -e "${YELLOW}Press Enter to return to main menu...${NC}"
+    read
+}
+
+set_high_refresh_rate() {
+    clear
+    print_banner
+    echo -e "${GREEN}═══════════════════════════════════════════════════════════════${NC}"
+    echo -e "${WHITE}            SET HIGH REFRESH RATE${NC}"
+    echo -e "${GREEN}═══════════════════════════════════════════════════════════════${NC}"
+    echo ""
+    echo -e "${CYAN}This script will set your monitor to the highest available refresh rate${NC}"
+    echo -e "${CYAN}and create a systemd service to maintain this setting permanently.${NC}"
+    echo ""
+    echo -e "${WHITE}Based on Reddit and Arch Wiki recommendations${NC}"
+    echo ""
+    echo -e "${RED}⚠ Requires active X11 session${NC}"
+    echo ""
+    echo -ne "${YELLOW}Do you want to set high refresh rate? [y/N]: ${NC}"
+    read confirm
+    
+    if [[ "$confirm" == "y" ]] || [[ "$confirm" == "Y" ]]; then
+        echo ""
+        show_loading "Setting high refresh rate..."
+        bash "$(dirname "$0")/scripts/set-high-refresh-rate.sh"
+        
+        if [ $? -eq 0 ]; then
+            echo ""
+            show_success "High refresh rate set successfully!"
+            echo ""
+            echo -e "${YELLOW}⚠ A systemd service has been created to maintain this setting${NC}"
+            echo -e "${YELLOW}⚠ You may need to restart your display manager for the service to take effect${NC}"
+        else
+            echo ""
+            show_error "High refresh rate setting failed. Please check the error messages above."
+        fi
+    else
+        show_info "High refresh rate setting cancelled."
+    fi
+    
+    echo ""
+    echo -e "${YELLOW}Press Enter to return to main menu...${NC}"
+    read
+}
+
+advanced_kernel_tweaks() {
+    clear
+    print_banner
+    echo -e "${GREEN}═══════════════════════════════════════════════════════════════${NC}"
+    echo -e "${WHITE}            ADVANCED KERNEL TWEAKS${NC}"
+    echo -e "${GREEN}═══════════════════════════════════════════════════════════════${NC}"
+    echo ""
+    echo -e "${CYAN}Advanced kernel parameters for maximum gaming performance${NC}"
+    echo -e "${CYAN}Based on Reddit, Arch Wiki, and gaming optimization guides${NC}"
+    echo ""
+    echo -e "${RED}⚠ These are aggressive optimizations that may affect stability${NC}"
+    echo -e "${YELLOW}⚠ Recommended for experienced users only${NC}"
+    echo ""
+    echo -e "${WHITE}The following will be applied:${NC}"
+    echo -e "${WHITE}• Advanced sysctl settings for gaming${NC}"
+    echo -e "${WHITE}• TCP BBR congestion control${NC}"
+    echo -e "${WHITE}• Optimized scheduler parameters${NC}"
+    echo -e "${WHITE}• Memory management for low latency${NC}"
+    echo -e "${WHITE}• Advanced kernel parameters (mitigations=off, C-states disabled)${NC}"
+    echo ""
+    echo -e "${WHITE}⚠ WARNING: Some parameters disable security mitigations${NC}"
+    echo ""
+    echo -ne "${YELLOW}Do you want to apply advanced kernel tweaks? [y/N]: ${NC}"
+    read confirm
+    
+    if [[ "$confirm" == "y" ]] || [[ "$confirm" == "Y" ]]; then
+        echo ""
+        show_loading "Applying advanced kernel tweaks..."
+        
+        # Apply advanced sysctl settings
+        if [ -f "$(dirname "$0")/config/sysctl/99-advanced-kernel-tweaks.conf" ]; then
+            sudo cp "$(dirname "$0")/config/sysctl/99-advanced-kernel-tweaks.conf" /etc/sysctl.d/
+            sudo sysctl -p /etc/sysctl.d/99-advanced-kernel-tweaks.conf
+            show_success "Advanced sysctl settings applied"
+        else
+            show_error "Advanced sysctl config not found"
+        fi
+        
+        echo ""
+        echo -e "${YELLOW}⚠ For advanced kernel parameters, add these to GRUB_CMDLINE_LINUX_DEFAULT:${NC}"
+        echo -e "${WHITE}processor.max_cstate=0 intel_idle.max_cstate=0 idle=poll nowatchdog nosoftlockup audit=0 usbcore.autosuspend=-1${NC}"
+        echo -e "${WHITE}For even more performance (security trade-off): mitigations=off${NC}"
+        echo ""
+        echo -e "${CYAN}Full list available in config/kernel/cmdline-advanced-gaming.conf${NC}"
+        echo ""
+        echo -e "${YELLOW}⚠ After modifying GRUB, run: sudo grub-mkconfig -o /boot/grub/grub.cfg${NC}"
+        echo -e "${YELLOW}⚠ Then reboot the system${NC}"
+        
+        show_success "Advanced kernel tweaks completed"
+    else
+        show_info "Advanced kernel tweaks cancelled."
     fi
     
     echo ""

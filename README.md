@@ -86,9 +86,11 @@ bash run.sh
   [4] Run Daily Maintenance
   [5] Rollback Changes
   [6] Hardware Information
-  [7] Low Latency Gaming Mode
-  [8] About
-  [0] Exit
+  [7] Set High Refresh Rate
+  [8] Low Latency Gaming Mode
+  [9] Advanced Kernel Tweaks
+  [0] About
+  [10] Exit
 
 ═══════════════════════════════════════════════════════════════
 ```
@@ -140,6 +142,55 @@ bash run.sh
 - Disable ananicy-cpp during gaming sessions
 - Consider using Gamescope: `gamescope -W 1920 -H 1080 -r 144 -b -- %command%`
 - Install Low Latency Layer from AUR for Vulkan games
+
+## 🖥️ High Refresh Rate Setup
+
+Automatically set your monitor to the highest available refresh rate and maintain it permanently:
+
+### Enable High Refresh Rate
+```bash
+bash run.sh
+# Select [7] Set High Refresh Rate
+```
+
+### What It Does
+- **Automatic Detection** - Detects all connected displays
+- **Maximum Refresh Rate** - Sets each display to its highest available refresh rate
+- **Permanent Setting** - Creates systemd service to maintain setting across reboots
+- **Desktop Autostart** - Adds autostart entry for desktop environments
+- **Multi-Monitor Support** - Works with multiple displays
+
+### Manual Control
+```bash
+# Check current refresh rates
+xrandr
+
+# Set specific refresh rate
+xrandr --output DP-0 --mode 1920x1080 --rate 144
+```
+
+## ⚙️ Advanced Kernel Tweaks
+
+For maximum gaming performance with Reddit and Arch Wiki recommended kernel parameters:
+
+### Enable Advanced Kernel Tweaks
+```bash
+bash run.sh
+# Select [9] Advanced Kernel Tweaks
+```
+
+### What It Optimizes
+- **Advanced Sysctl Settings** - Gaming-specific kernel parameters
+- **TCP BBR Congestion Control** - Better network performance
+- **Scheduler Optimizations** - Low latency CPU scheduling
+- **Memory Management** - Ultra-low latency memory settings
+- **Advanced Kernel Parameters** - `mitigations=off`, C-states disabled, `idle=poll`
+
+### Warning
+- **Security Trade-off** - Some parameters disable CPU security mitigations
+- **Stability Impact** - Aggressive optimizations may affect system stability
+- **Recommended for** - Experienced users only
+- **Test Before Use** - Try individual parameters first
 ```
 
 ## 📁 Project Structure
@@ -173,7 +224,8 @@ cachyos-optimization-project/
 │   ├── memory-optimization.sh # Memory optimization
 │   ├── network-optimization.sh # Network optimization
 │   ├── storage-optimization.sh # Storage optimization
-│   └── low-latency-optimization.sh # Low latency gaming mode
+│   ├── low-latency-optimization.sh # Low latency gaming mode
+│   └── set-high-refresh-rate.sh # High refresh rate setup
 └── sources/                    # Source files
     ├── CachyOS-Settings/      # Official CachyOS configs
     └── linux-cachyos/         # CachyOS kernel source
@@ -194,6 +246,8 @@ cachyos-optimization-project/
 - **Network Optimization:** Driver selection, TCP/IP tuning
 - **Storage Optimization:** I/O scheduler selection, TRIM setup
 - **Low Latency Gaming:** Reddit and CachyOS Forum recommended optimizations for lowest input lag
+- **High Refresh Rate:** Automatic detection and setting of maximum monitor refresh rate
+- **Advanced Kernel Tweaks:** Reddit and Arch Wiki recommended kernel parameters for gaming
 
 ### User Interface
 - **Animated Terminal UI:** Smooth animations and transitions

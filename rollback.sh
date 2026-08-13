@@ -69,6 +69,7 @@ show_loading "Removing sysctl configurations..."
 rm -f /etc/sysctl.d/99-performance.conf
 rm -f /etc/sysctl.d/99-cachyos-tweaks.conf
 rm -f /etc/sysctl.d/99-low-latency.conf
+rm -f /etc/sysctl.d/99-advanced-kernel-tweaks.conf
 sysctl --system > /dev/null 2>&1
 show_success "Sysctl configurations removed"
 
@@ -100,6 +101,13 @@ if [ -f /etc/default/grub ]; then
     sed -i 's/ nosoftlockup//g' /etc/default/grub
     sed -i 's/ audit=0//g' /etc/default/grub
     sed -i 's/ usbcore.autosuspend=-1//g' /etc/default/grub
+    sed -i 's/ idle=poll//g' /etc/default/grub
+    sed -i 's/ mitigations=off//g' /etc/default/grub
+    sed -i 's/ slab_nomerge//g' /etc/default/grub
+    sed -i 's/ slub_nomerge//g' /etc/default/grub
+    sed -i 's/ mce=off//g' /etc/default/grub
+    sed -i 's/ noibrs//g' /etc/default/grub
+    sed -i 's/ nopat//g' /etc/default/grub
     grub-mkconfig -o /boot/grub/grub.cfg > /dev/null 2>&1
     show_success "GRUB defaults restored"
 else
