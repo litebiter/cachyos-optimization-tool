@@ -17,7 +17,8 @@ Created by [litebiter](https://github.com/litebiter) & [auxmeet](https://github.
 
 - **🎯 Universal Hardware Support** - Automatic detection and optimization for all CPU/GPU combinations
 - **⚡ Smart Performance Tuning** - Adaptive optimizations based on your specific hardware
-- **🎨 Beautiful Interface** - Animated terminal UI with interactive menus and color-coded output
+- **� Low Latency Gaming Mode** - Reddit and CachyOS Forum recommended optimizations for lowest input lag
+- **�🎨 Beautiful Interface** - Animated terminal UI with interactive menus and color-coded output
 - **🛡️ Safe & Reversible** - All changes can be easily rolled back with one command
 - **🔄 Regular Updates** - Integrated with official CachyOS configurations for latest optimizations
 
@@ -85,7 +86,8 @@ bash run.sh
   [4] Run Daily Maintenance
   [5] Rollback Changes
   [6] Hardware Information
-  [7] About
+  [7] Low Latency Gaming Mode
+  [8] About
   [0] Exit
 
 ═══════════════════════════════════════════════════════════════
@@ -107,6 +109,37 @@ sudo bash daily-tweaks.sh
 
 # Rollback all changes
 sudo bash rollback.sh
+
+## 🎮 Low Latency Gaming Mode
+
+For competitive gaming and lowest input lag, use the Low Latency Gaming Mode:
+
+### Key Features
+- **Reddit & CachyOS Forum Optimized** - Based on community recommendations
+- **Ultra-Low Input Lag** - Optimizations for fastest response times
+- **Gaming-Specific Tuning** - Trade some performance for lower latency
+- **BORE Scheduler** - Already enabled in CachyOS kernel
+- **Gamescope Integration** - Recommendations for best latency
+
+### Enable Low Latency Mode
+```bash
+bash run.sh
+# Select [7] Low Latency Gaming Mode
+```
+
+### What It Does
+- Disables proactive compaction (reduces jitter)
+- Applies low latency kernel parameters
+- Disables USB autosuspend for input devices
+- Disables split-lock detection
+- Gaming-specific sysctl settings
+- CPU isolation recommendations
+
+### Additional Recommendations
+- Use X11 instead of Wayland for competitive gaming
+- Disable ananicy-cpp during gaming sessions
+- Consider using Gamescope: `gamescope -W 1920 -H 1080 -r 144 -b -- %command%`
+- Install Low Latency Layer from AUR for Vulkan games
 ```
 
 ## 📁 Project Structure
@@ -139,7 +172,8 @@ cachyos-optimization-project/
 │   ├── gpu-optimization.sh    # GPU optimization
 │   ├── memory-optimization.sh # Memory optimization
 │   ├── network-optimization.sh # Network optimization
-│   └── storage-optimization.sh # Storage optimization
+│   ├── storage-optimization.sh # Storage optimization
+│   └── low-latency-optimization.sh # Low latency gaming mode
 └── sources/                    # Source files
     ├── CachyOS-Settings/      # Official CachyOS configs
     └── linux-cachyos/         # CachyOS kernel source
@@ -159,6 +193,7 @@ cachyos-optimization-project/
 - **Memory Optimization:** Swap tuning, cache optimization, transparent hugepages
 - **Network Optimization:** Driver selection, TCP/IP tuning
 - **Storage Optimization:** I/O scheduler selection, TRIM setup
+- **Low Latency Gaming:** Reddit and CachyOS Forum recommended optimizations for lowest input lag
 
 ### User Interface
 - **Animated Terminal UI:** Smooth animations and transitions

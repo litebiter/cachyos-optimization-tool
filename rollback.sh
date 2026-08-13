@@ -68,6 +68,7 @@ echo ""
 show_loading "Removing sysctl configurations..."
 rm -f /etc/sysctl.d/99-performance.conf
 rm -f /etc/sysctl.d/99-cachyos-tweaks.conf
+rm -f /etc/sysctl.d/99-low-latency.conf
 sysctl --system > /dev/null 2>&1
 show_success "Sysctl configurations removed"
 
@@ -93,6 +94,12 @@ if [ -f /etc/default/grub ]; then
     sed -i 's/ nvidia-drm.modeset=1//g' /etc/default/grub
     sed -i 's/ amd_iommu=on//g' /etc/default/grub
     sed -i 's/ intel_iommu=on//g' /etc/default/grub
+    sed -i 's/ processor.max_cstate=0//g' /etc/default/grub
+    sed -i 's/ intel_idle.max_cstate=0//g' /etc/default/grub
+    sed -i 's/ nowatchdog//g' /etc/default/grub
+    sed -i 's/ nosoftlockup//g' /etc/default/grub
+    sed -i 's/ audit=0//g' /etc/default/grub
+    sed -i 's/ usbcore.autosuspend=-1//g' /etc/default/grub
     grub-mkconfig -o /boot/grub/grub.cfg > /dev/null 2>&1
     show_success "GRUB defaults restored"
 else

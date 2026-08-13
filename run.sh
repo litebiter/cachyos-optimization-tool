@@ -156,12 +156,13 @@ main_menu() {
         echo -e "${CYAN}  [4]${NC} ${WHITE}Run Daily Maintenance${NC}"
         echo -e "${CYAN}  [5]${NC} ${WHITE}Rollback Changes${NC}"
         echo -e "${CYAN}  [6]${NC} ${WHITE}Hardware Information${NC}"
-        echo -e "${CYAN}  [7]${NC} ${WHITE}About${NC}"
+        echo -e "${CYAN}  [7]${NC} ${WHITE}Low Latency Gaming Mode${NC}"
+        echo -e "${CYAN}  [8]${NC} ${WHITE}About${NC}"
         echo -e "${CYAN}  [0]${NC} ${RED}Exit${NC}"
         echo ""
         echo -e "${GREEN}═══════════════════════════════════════════════════════════════${NC}"
         echo ""
-        echo -ne "${YELLOW}Enter your choice [0-7]: ${NC}"
+        echo -ne "${YELLOW}Enter your choice [0-8]: ${NC}"
         read choice
         
         case $choice in
@@ -184,6 +185,9 @@ main_menu() {
                 hardware_info
                 ;;
             7)
+                low_latency_mode
+                ;;
+            8)
                 about
                 ;;
             0)
@@ -363,6 +367,57 @@ hardware_info() {
     lspci | grep -i network
     echo ""
     
+    echo -e "${YELLOW}Press Enter to return to main menu...${NC}"
+    read
+}
+
+low_latency_mode() {
+    clear
+    print_banner
+    echo -e "${GREEN}═══════════════════════════════════════════════════════════════${NC}"
+    echo -e "${WHITE}            LOW LATENCY GAMING MODE${NC}"
+    echo -e "${GREEN}═══════════════════════════════════════════════════════════════${NC}"
+    echo ""
+    echo -e "${CYAN}This mode applies Reddit and CachyOS Forum recommended${NC}"
+    echo -e "${CYAN}optimizations for lowest input lag in gaming.${NC}"
+    echo ""
+    echo -e "${RED}⚠ These optimizations trade some performance for lower latency${NC}"
+    echo -e "${YELLOW}⚠ Recommended for competitive gaming only${NC}"
+    echo ""
+    echo -e "${WHITE}The following changes will be made:${NC}"
+    echo -e "${WHITE}• Disable proactive compaction (reduces jitter)${NC}"
+    echo -e "${WHITE}• Low latency kernel parameters${NC}"
+    echo -e "${WHITE}• USB autosuspend disabled${NC}"
+    echo -e "${WHITE}• Split-lock detection disabled${NC}"
+    echo -e "${WHITE}• Gaming-specific sysctl settings${NC}"
+    echo -e "${WHITE}• CPU isolation recommendations${NC}"
+    echo ""
+    echo -ne "${YELLOW}Do you want to enable low latency mode? [y/N]: ${NC}"
+    read confirm
+    
+    if [[ "$confirm" == "y" ]] || [[ "$confirm" == "Y" ]]; then
+        echo ""
+        show_loading "Applying low latency optimizations..."
+        bash "$(dirname "$0")/scripts/low-latency-optimization.sh"
+        
+        if [ $? -eq 0 ]; then
+            echo ""
+            show_success "Low latency mode enabled!"
+            echo ""
+            echo -e "${YELLOW}⚠ For extreme low latency, consider adding these kernel parameters:${NC}"
+            echo -e "${WHITE}processor.max_cstate=0 intel_idle.max_cstate=0 nowatchdog nosoftlockup audit=0 usbcore.autosuspend=-1${NC}"
+            echo ""
+            echo -e "${YELLOW}⚠ For competitive gaming, use X11 instead of Wayland${NC}"
+            echo -e "${YELLOW}⚠ Consider disabling ananicy-cpp during gaming sessions${NC}"
+        else
+            echo ""
+            show_error "Low latency mode failed. Please check the error messages above."
+        fi
+    else
+        show_info "Low latency mode cancelled."
+    fi
+    
+    echo ""
     echo -e "${YELLOW}Press Enter to return to main menu...${NC}"
     read
 }

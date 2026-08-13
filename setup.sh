@@ -187,6 +187,10 @@ show_loading "Running storage optimization..."
 bash "$SCRIPTS_DIR/storage-optimization.sh" > /dev/null 2>&1
 show_success "Storage optimization completed"
 
+show_loading "Running low latency optimization..."
+bash "$SCRIPTS_DIR/low-latency-optimization.sh" > /dev/null 2>&1
+show_success "Low latency optimization completed"
+
 # Enable fstrim for SSDs
 if [ $NVME_COUNT -gt 0 ] || [ $SSD_COUNT -gt 0 ]; then
     show_loading "Enabling periodic TRIM for SSDs..."

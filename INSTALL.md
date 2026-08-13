@@ -97,7 +97,8 @@ Select from the following options:
   [4] Run Daily Maintenance
   [5] Rollback Changes
   [6] Hardware Information
-  [7] About
+  [7] Low Latency Gaming Mode
+  [8] About
   [0] Exit
 
 ═══════════════════════════════════════════════════════════════
@@ -341,6 +342,65 @@ sudo bash rollback.sh
 ```
 
 </div>
+
+## 🎮 Low Latency Gaming Mode
+
+For competitive gaming and lowest input lag, enable the Low Latency Gaming Mode:
+
+### Enable Low Latency Mode
+<div align="center">
+
+```bash
+bash run.sh
+# Select [7] Low Latency Gaming Mode
+```
+
+</div>
+
+### What It Optimizes
+- **Ultra-Low Input Lag** - Reddit and CachyOS Forum recommended settings
+- **Kernel Parameters** - `processor.max_cstate=0 intel_idle.max_cstate=0 nowatchdog nosoftlockup audit=0 usbcore.autosuspend=-1`
+- **Sysctl Settings** - Low latency memory and network configurations
+- **CPU Isolation** - Recommendations for dedicating cores to gaming
+- **Input Device Optimization** - USB autosuspend disabled for fastest response
+
+### Gaming Tools Recommendations
+<div align="center">
+
+```bash
+# Install gaming tools
+sudo pacman -S gamemode mangohud gamescope
+```
+
+</div>
+
+- **Low Latency Layer:** Available in AUR (for Vulkan games)
+
+### Environment Variables for Gaming
+<div align="center">
+
+```bash
+# Steam launch options for lowest latency
+__GL_SYNC_TO_VBLANK=0 __GLX_VSYNC_MODE=0 vblank_mode=0 %command%
+PROTON_NO_ESYNC=1 PROTON_NO_FSYNC=1 %command%
+```
+
+</div>
+
+### Gamescope for Best Latency
+<div align="center">
+
+```bash
+gamescope -W 1920 -H 1080 -r 144 -b -- %command%
+sudo setcap 'CAP_SYS_NICE=eip' "$(which gamescope)"
+```
+
+</div>
+
+### Display Server Choice
+- **X11:** Generally lower input latency for gaming
+- **Wayland:** Better for desktop, slightly higher latency
+- **For competitive gaming:** X11 recommended
 
 This will:
 - Remove custom sysctl configurations
