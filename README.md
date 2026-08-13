@@ -89,8 +89,9 @@ bash run.sh
   [7] Set High Refresh Rate
   [8] Low Latency Gaming Mode
   [9] Advanced Kernel Tweaks
-  [0] About
-  [10] Exit
+  [10] Graphics Optimization (OpenGL/Vulkan)
+  [11] About
+  [0] Exit
 
 ═══════════════════════════════════════════════════════════════
 ```
@@ -191,6 +192,64 @@ bash run.sh
 - **Stability Impact** - Aggressive optimizations may affect system stability
 - **Recommended for** - Experienced users only
 - **Test Before Use** - Try individual parameters first
+
+## 🎮 Graphics Optimization (OpenGL/Vulkan)
+
+Optimize OpenGL and Vulkan graphics performance with Reddit, CachyOS Forum, and Arch Wiki recommended settings:
+
+### Enable Graphics Optimization
+```bash
+bash run.sh
+# Select [10] Graphics Optimization (OpenGL/Vulkan)
+```
+
+### What It Optimizes
+- **GPU-Specific Environment Variables** - Tailored for NVIDIA, AMD, and Intel GPUs
+- **Proton/Steam Launch Optimizations** - CachyOS Proton-specific variables
+- **vkBasalt Post-Processing** - FidelityFX CAS sharpening
+- **DXVK/VKD3D Tuning** - DirectX to Vulkan translation optimizations
+- **Mesa Driver Settings** - OpenGL threading and performance
+
+### NVIDIA-Specific Optimizations
+- Threaded optimizations enabled
+- Shader disk cache enabled
+- Sync to vblank disabled (reduce input lag)
+- GL shader caching optimized
+
+### AMD-Specific Optimizations
+- RADV ACO compiler enabled
+- 16x anisotropic filtering forced
+- OpenGL threading enabled
+- vkBasalt post-processing configured
+- Async compute optimizations
+
+### Proton/Steam Launch Options
+The script generates environment variables that can be used in Steam launch options:
+```bash
+# Recommended for most games
+PROTON_DXVK_GPLASYNC=1 PROTON_USE_NTSYNC=1 %command%
+
+# For FSR 3.0 upscaling
+PROTON_FSR3_UPGRADE=1 %command%
+
+# For NVIDIA features in games
+PROTON_ENABLE_NVAPI=1 %command%
+
+# For Wayland gaming
+PROTON_ENABLE_WAYLAND=1 %command%
+```
+
+### How to Apply
+After running the script, restart your terminal or run:
+```bash
+source ~/.config/cachyos-optimization/graphics-env.conf
+```
+
+### Rollback
+To remove graphics optimizations:
+```bash
+sudo bash rollback.sh
+# This removes all user-level graphics optimizations
 ```
 
 ## 📁 Project Structure
@@ -225,7 +284,8 @@ cachyos-optimization-project/
 │   ├── network-optimization.sh # Network optimization
 │   ├── storage-optimization.sh # Storage optimization
 │   ├── low-latency-optimization.sh # Low latency gaming mode
-│   └── set-high-refresh-rate.sh # High refresh rate setup
+│   ├── set-high-refresh-rate.sh # High refresh rate setup
+│   └── graphics-optimization.sh # OpenGL/Vulkan optimization
 └── sources/                    # Source files
     ├── CachyOS-Settings/      # Official CachyOS configs
     └── linux-cachyos/         # CachyOS kernel source

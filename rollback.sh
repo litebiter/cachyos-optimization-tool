@@ -153,6 +153,48 @@ systemctl disable fstrim.timer > /dev/null 2>&1
 systemctl stop fstrim.timer > /dev/null 2>&1
 show_success "Periodic TRIM disabled"
 
+# Remove user-level graphics optimizations
+show_loading "Removing user-level graphics optimizations..."
+if [ -n "$SUDO_USER" ]; then
+    USER_HOME=$(getent passwd "$SUDO_USER" | cut -d':' -f6)
+    
+    # Remove graphics environment file
+    rm -f "$USER_HOME/.config/cachyos-optimization/graphics-env.conf"
+    
+    # Remove from .bashrc
+    if [ -f "$USER_HOME/.bashrc" ]; then
+        sed -i '/cachyos-optimization\/graphics-env.conf/d' "$USER_HOME/.bashrc"
+    fi
+    
+    # Remove from .zshrc
+    if [ -f "$USER_HOME/.zshrc" ]; then
+        sed -i '/cachyos-optimization\/graphics-env.conf/d' "$USER_HOME/.zshrc"
+    fi
+    
+    # Remove vkBasalt config
+    rm -rf "$USER_HOME/.config/vkBasalt"
+    
+    # Remove screenlayout script
+    rm -f "$USER_HOME/.screenlayout/high-refresh-rate.sh"
+    
+    # Remove from .xinitrc
+    if [ -f "$USER_HOME/.xinitrc" ]; then
+        sed -i '/screenlayout\/high-refresh-rate.sh/d' "$USER_HOME/.xinitrc"
+        sed -i '/Load high refresh rate settings/d' "$USER_HOME/.xinitrc"
+    fi
+    
+    # Remove systemd user service
+    rm -f "$USER_HOME/.config/systemd/user/set-high-refresh-rate.service"
+    
+    # Remove autostart entries
+    rm -f "$USER_HOME/.config/autostart/set-high-refresh-rate.desktop"
+    rm -f "$USER_HOME/.config/autostart/nvidia-settings.desktop"
+    
+    show_success "User-level graphics optimizations removed"
+else
+    show_success "No user detected, skipping user-level cleanup"
+fi
+
 echo ""
 echo -e "${GREEN}=== Rollback Complete ===${NC}"
 echo ""

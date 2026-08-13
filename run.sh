@@ -159,12 +159,13 @@ main_menu() {
         echo -e "${CYAN}  [7]${NC} ${WHITE}Set High Refresh Rate${NC}"
         echo -e "${CYAN}  [8]${NC} ${WHITE}Low Latency Gaming Mode${NC}"
         echo -e "${CYAN}  [9]${NC} ${WHITE}Advanced Kernel Tweaks${NC}"
-        echo -e "${CYAN}  [10]${NC} ${WHITE}About${NC}"
+        echo -e "${CYAN}  [10]${NC} ${WHITE}Graphics Optimization (OpenGL/Vulkan)${NC}"
+        echo -e "${CYAN}  [11]${NC} ${WHITE}About${NC}"
         echo -e "${CYAN}  [0]${NC} ${RED}Exit${NC}"
         echo ""
         echo -e "${GREEN}═══════════════════════════════════════════════════════════════${NC}"
         echo ""
-        echo -ne "${YELLOW}Enter your choice [0-10]: ${NC}"
+        echo -ne "${YELLOW}Enter your choice [0-11]: ${NC}"
         read choice
         
         case $choice in
@@ -196,6 +197,9 @@ main_menu() {
                 advanced_kernel_tweaks
                 ;;
             10)
+                graphics_optimization
+                ;;
+            11)
                 about
                 ;;
             0)
@@ -522,6 +526,57 @@ advanced_kernel_tweaks() {
         show_success "Advanced kernel tweaks completed"
     else
         show_info "Advanced kernel tweaks cancelled."
+    fi
+    
+    echo ""
+    echo -e "${YELLOW}Press Enter to return to main menu...${NC}"
+    read
+}
+
+graphics_optimization() {
+    clear
+    print_banner
+    echo -e "${GREEN}═══════════════════════════════════════════════════════════════${NC}"
+    echo -e "${WHITE}        GRAPHICS OPTIMIZATION (OpenGL/Vulkan)${NC}"
+    echo -e "${GREEN}═══════════════════════════════════════════════════════════════${NC}"
+    echo ""
+    echo -e "${CYAN}This script applies Reddit and Arch Wiki recommended${NC}"
+    echo -e "${CYAN}optimizations for OpenGL and Vulkan graphics performance.${NC}"
+    echo ""
+    echo -e "${WHITE}Based on:${NC}"
+    echo -e "${WHITE}• CachyOS Forum gaming recommendations${NC}"
+    echo -e "${WHITE}• Steam community optimizations${NC}"
+    echo -e "${WHITE}• Arch Wiki Mesa documentation${NC}"
+    echo -e "${WHITE}• vkBasalt post-processing${NC}"
+    echo ""
+    echo -e "${WHITE}Includes:${NC}"
+    echo -e "${WHITE}• GPU-specific environment variables${NC}"
+    echo -e "${WHITE}• Proton/Steam launch optimizations${NC}"
+    echo -e "${WHITE}• vkBasalt configuration (CAS sharpening)${NC}"
+    echo -e "${WHITE}• DXVK/VKD3D tuning variables${NC}"
+    echo ""
+    echo -e "${YELLOW}⚠ These are per-user optimizations (no root required)${NC}"
+    echo ""
+    echo -ne "${YELLOW}Do you want to apply graphics optimizations? [y/N]: ${NC}"
+    read confirm
+    
+    if [[ "$confirm" == "y" ]] || [[ "$confirm" == "Y" ]]; then
+        echo ""
+        show_loading "Applying graphics optimizations..."
+        bash "$(dirname "$0")/scripts/graphics-optimization.sh"
+        
+        if [ $? -eq 0 ]; then
+            echo ""
+            show_success "Graphics optimizations applied!"
+            echo ""
+            echo -e "${YELLOW}⚠ Restart your terminal or run: source ~/.config/cachyos-optimization/graphics-env.conf${NC}"
+            echo -e "${YELLOW}⚠ Some Proton variables should be set per-game in Steam launch options${NC}"
+        else
+            echo ""
+            show_error "Graphics optimization failed. Please check the error messages above."
+        fi
+    else
+        show_info "Graphics optimization cancelled."
     fi
     
     echo ""
