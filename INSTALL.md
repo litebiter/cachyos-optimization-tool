@@ -6,7 +6,7 @@
 
 Created by [litebiter](https://github.com/litebiter) & [auxmeet](https://github.com/auxmeet)
 
-[![GitHub](https://img.shields.io/badge/Github-cachyos--optimization--tool-blue.svg)](https://github.com/iromenero/cachyos-optimization-tool)
+[![GitHub](https://img.shields.io/badge/Github-cachyos--optimization--tool-blue.svg)](https://github.com/litebiter/cachyos-optimization-tool)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![CachyOS](https://img.shields.io/badge/CachyOS-supported-orange.svg)](https://cachyos.org/)
 
@@ -28,7 +28,7 @@ Created by [litebiter](https://github.com/litebiter) & [auxmeet](https://github.
 
 ```bash
 # Clone the repository
-git clone https://github.com/iromenero/cachyos-optimization-tool.git
+git clone https://github.com/litebiter/cachyos-optimization-tool.git
 
 # Navigate to the project directory
 cd cachyos-optimization-tool
@@ -45,7 +45,7 @@ bash run.sh
 
 ```bash
 # Download the latest release
-wget https://github.com/iromenero/cachyos-optimization-tool/archive/refs/heads/main.zip
+wget https://github.com/litebiter/cachyos-optimization-tool/archive/refs/heads/main.zip
 
 # Extract the archive
 unzip main.zip
@@ -428,7 +428,7 @@ We welcome contributions! Please feel free to:
 ## 📞 Support
 
 For issues and questions:
-- **GitHub Issues:** [Project Issues](https://github.com/iromenero/cachyos-optimization-tool/issues)
+- **GitHub Issues:** [Project Issues](https://github.com/litebiter/cachyos-optimization-tool/issues)
 - **CachyOS Forum:** https://discuss.cachyos.org/
 - **Arch Forum:** https://bbs.archlinux.org/
 
