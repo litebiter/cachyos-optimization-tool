@@ -160,12 +160,13 @@ main_menu() {
         echo -e "${CYAN}  [8]${NC} ${WHITE}Low Latency Gaming Mode${NC}"
         echo -e "${CYAN}  [9]${NC} ${WHITE}Advanced Kernel Tweaks${NC}"
         echo -e "${CYAN}  [10]${NC} ${WHITE}Graphics Optimization (OpenGL/Vulkan)${NC}"
-        echo -e "${CYAN}  [11]${NC} ${WHITE}About${NC}"
+        echo -e "${CYAN}  [11]${NC} ${WHITE}Java Performance Optimization${NC}"
+        echo -e "${CYAN}  [12]${NC} ${WHITE}About${NC}"
         echo -e "${CYAN}  [0]${NC} ${RED}Exit${NC}"
         echo ""
         echo -e "${GREEN}═══════════════════════════════════════════════════════════════${NC}"
         echo ""
-        echo -ne "${YELLOW}Enter your choice [0-11]: ${NC}"
+        echo -ne "${YELLOW}Enter your choice [0-12]: ${NC}"
         read choice
         
         case $choice in
@@ -200,6 +201,9 @@ main_menu() {
                 graphics_optimization
                 ;;
             11)
+                java_optimization
+                ;;
+            12)
                 about
                 ;;
             0)
@@ -577,6 +581,59 @@ graphics_optimization() {
         fi
     else
         show_info "Graphics optimization cancelled."
+    fi
+    
+    echo ""
+    echo -e "${YELLOW}Press Enter to return to main menu...${NC}"
+    read
+}
+
+java_optimization() {
+    clear
+    print_banner
+    echo -e "${GREEN}═══════════════════════════════════════════════════════════════${NC}"
+    echo -e "${WHITE}          JAVA PERFORMANCE OPTIMIZATION${NC}"
+    echo -e "${GREEN}═══════════════════════════════════════════════════════════════${NC}"
+    echo ""
+    echo -e "${CYAN}This script applies Reddit, Arch Wiki, and Phoronix recommended${NC}"
+    echo -e "${CYAN}optimizations for Java performance on CachyOS/Arch Linux.${NC}"
+    echo ""
+    echo -e "${WHITE}Based on:${NC}"
+    echo -e "${WHITE}• Phoronix CachyOS Java benchmarks${NC}"
+    echo -e "${WHITE}• Arch Wiki Java documentation${NC}"
+    echo -e "${WHITE}• Reddit Minecraft optimization guides${NC}"
+    echo -e "${WHITE}• Aikar's widely-tested JVM flags${NC}"
+    echo ""
+    echo -e "${WHITE}Includes:${NC}"
+    echo -e "${WHITE}• CachyOS optimized repository detection${NC}"
+    echo -e "${WHITE}• Transparent Huge Pages configuration${NC}"
+    echo -e "${WHITE}• JVM flags for G1GC optimization${NC}"
+    echo -e "${WHITE}• NUMA awareness for multi-socket systems${NC}"
+    echo -e "${WHITE}• Minecraft-specific Aikar's flags${NC}"
+    echo -e "${WHITE}• Java 21+ Generational ZGC support${NC}"
+    echo ""
+    echo -e "${YELLOW}⚠ Some optimizations require sudo privileges${NC}"
+    echo ""
+    echo -ne "${YELLOW}Do you want to apply Java optimizations? [y/N]: ${NC}"
+    read confirm
+    
+    if [[ "$confirm" == "y" ]] || [[ "$confirm" == "Y" ]]; then
+        echo ""
+        show_loading "Applying Java optimizations..."
+        bash "$(dirname "$0")/scripts/java-optimization.sh"
+        
+        if [ $? -eq 0 ]; then
+            echo ""
+            show_success "Java optimizations applied!"
+            echo ""
+            echo -e "${YELLOW}⚠ Restart your terminal or run: source ~/.config/cachyos-optimization/java-env.conf${NC}"
+            echo -e "${YELLOW}⚠ For Minecraft-specific optimizations, edit the config file${NC}"
+        else
+            echo ""
+            show_error "Java optimization failed. Please check the error messages above."
+        fi
+    else
+        show_info "Java optimization cancelled."
     fi
     
     echo ""

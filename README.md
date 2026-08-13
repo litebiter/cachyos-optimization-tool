@@ -90,7 +90,8 @@ bash run.sh
   [8] Low Latency Gaming Mode
   [9] Advanced Kernel Tweaks
   [10] Graphics Optimization (OpenGL/Vulkan)
-  [11] About
+  [11] Java Performance Optimization
+  [12] About
   [0] Exit
 
 ═══════════════════════════════════════════════════════════════
@@ -252,6 +253,81 @@ sudo bash rollback.sh
 # This removes all user-level graphics optimizations
 ```
 
+## ☕ Java Performance Optimization
+
+Optimize Java performance for CachyOS/Arch Linux with Reddit, Arch Wiki, and Phoronix benchmarked settings:
+
+### Enable Java Optimization
+```bash
+bash run.sh
+# Select [11] Java Performance Optimization
+```
+
+### What It Optimizes
+- **CachyOS Optimized Repositories** - Detection of x86-64-v3/v4 repositories (5-20% improvement)
+- **Transparent Huge Pages** - Better memory access for Java applications
+- **JVM Flags** - G1GC optimization with Aikar's widely-tested flags
+- **NUMA Awareness** - Multi-socket system optimization
+- **Code Cache** - Optimized JIT compilation cache sizes
+- **System-Level Tuning** - Huge pages, memory overcommit, shared memory limits
+- **Minecraft-Specific** - Aikar's flags for Minecraft servers/clients
+- **Java 21+ Support** - Generational ZGC for low-latency applications
+
+### System-Level Optimizations
+- Transparent Huge Pages enabled
+- 1024 huge pages allocated (configurable)
+- Memory overcommit optimized
+- Shared memory limits increased
+- File descriptor limits increased
+- Systemd service limits raised
+
+### JVM Optimizations
+The script sets `_JAVA_OPTIONS` with optimized flags:
+- G1GC with tuned parameters for reduced GC pauses
+- NUMA awareness for multi-socket systems
+- Code cache optimization (400M reserved)
+- Vectorization optimizations
+- Thread priority optimization
+- Performance monitoring optimizations
+
+### Minecraft-Specific Optimizations
+For Minecraft servers/clients, use Aikar's widely-tested flags:
+```bash
+java -Xms4G -Xmx4G -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -jar server.jar
+```
+
+### Java 21+ Generational ZGC
+For Java 21+ applications requiring ultra-low latency:
+```bash
+export _JAVA_OPTIONS="-XX:+UseZGC -XX:+ZGenerational -XX:ZCollectionInterval=5 -XX:ConcGCThreads=2 -XX:ParallelGCThreads=8"
+```
+
+### CachyOS Optimized Repositories
+The script detects if CachyOS optimized repositories are configured:
+- **x86-64-v3**: 5-20% performance improvement (AVX2 support)
+- **x86-64-v4**: Additional gains with AVX512 support
+- **Zen4/5**: Further optimizations for newer AMD CPUs
+
+### How to Apply
+After running the script, restart your terminal or run:
+```bash
+source ~/.config/cachyos-optimization/java-env.conf
+```
+
+### Expected Performance Improvements
+- **5-20%** from CachyOS optimized repositories (if configured)
+- **Reduced GC pauses** with G1GC tuning
+- **Better memory access** with huge pages
+- **Improved NUMA performance** on multi-socket systems
+- **Lower latency** with Generational ZGC (Java 21+)
+
+### Rollback
+To remove Java optimizations:
+```bash
+sudo bash rollback.sh
+# This removes all Java-specific optimizations
+```
+
 ## 📁 Project Structure
 
 ```
@@ -285,7 +361,8 @@ cachyos-optimization-project/
 │   ├── storage-optimization.sh # Storage optimization
 │   ├── low-latency-optimization.sh # Low latency gaming mode
 │   ├── set-high-refresh-rate.sh # High refresh rate setup
-│   └── graphics-optimization.sh # OpenGL/Vulkan optimization
+│   ├── graphics-optimization.sh # OpenGL/Vulkan optimization
+│   └── java-optimization.sh   # Java performance optimization
 └── sources/                    # Source files
     ├── CachyOS-Settings/      # Official CachyOS configs
     └── linux-cachyos/         # CachyOS kernel source

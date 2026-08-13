@@ -161,14 +161,19 @@ if [ -n "$SUDO_USER" ]; then
     # Remove graphics environment file
     rm -f "$USER_HOME/.config/cachyos-optimization/graphics-env.conf"
     
+    # Remove Java environment file
+    rm -f "$USER_HOME/.config/cachyos-optimization/java-env.conf"
+    
     # Remove from .bashrc
     if [ -f "$USER_HOME/.bashrc" ]; then
         sed -i '/cachyos-optimization\/graphics-env.conf/d' "$USER_HOME/.bashrc"
+        sed -i '/cachyos-optimization\/java-env.conf/d' "$USER_HOME/.bashrc"
     fi
     
     # Remove from .zshrc
     if [ -f "$USER_HOME/.zshrc" ]; then
         sed -i '/cachyos-optimization\/graphics-env.conf/d' "$USER_HOME/.zshrc"
+        sed -i '/cachyos-optimization\/java-env.conf/d' "$USER_HOME/.zshrc"
     fi
     
     # Remove vkBasalt config
@@ -190,10 +195,20 @@ if [ -n "$SUDO_USER" ]; then
     rm -f "$USER_HOME/.config/autostart/set-high-refresh-rate.desktop"
     rm -f "$USER_HOME/.config/autostart/nvidia-settings.desktop"
     
-    show_success "User-level graphics optimizations removed"
+    show_success "User-level graphics and Java optimizations removed"
 else
     show_success "No user detected, skipping user-level cleanup"
 fi
+
+# Remove Java sysctl configuration
+show_loading "Removing Java sysctl configuration..."
+rm -f /etc/sysctl.d/99-java-tuning.conf
+show_success "Java sysctl configuration removed"
+
+# Remove Java systemd override
+show_loading "Removing Java systemd override..."
+rm -f /etc/systemd/system.conf.d/java-performance.conf
+show_success "Java systemd override removed"
 
 echo ""
 echo -e "${GREEN}=== Rollback Complete ===${NC}"
